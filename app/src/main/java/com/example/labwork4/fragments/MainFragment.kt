@@ -10,11 +10,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.labwork4.Data
 import com.example.labwork4.R
 import com.example.labwork4.goToFragment
 
 
 class MainFragment : Fragment() {
+    private val data = Data.newInstance()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,19 +28,21 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val getVideoUri = registerForActivityResult(ActivityResultContracts.GetContent()) {
             if (it == null){
-                Toast.makeText(context, "No file is choosed!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "No file is chosen!", Toast.LENGTH_SHORT).show()
                 return@registerForActivityResult
             }
-            goToFragment(requireActivity(), VideoFragment(it))
+            data.uri = it
+            goToFragment(requireActivity(), VideoFragment())
         }
 
 
         view.findViewById<Button>(R.id.videoFileButton).setOnClickListener{
             getVideoUri.launch("video/mp4")
         }
+
         view.findViewById<Button>(R.id.exampleVideoButton).setOnClickListener{
-            val myVideoUri: Uri = Uri.parse("android.resource://" + context?.packageName + "/" + R.raw.testvideo)
-            goToFragment(requireActivity(), VideoFragment(myVideoUri))
+            data.uri = Uri.parse("android.resource://" + context?.packageName + "/" + R.raw.testvideo)
+            goToFragment(requireActivity(), VideoFragment())
         }
     }
 
