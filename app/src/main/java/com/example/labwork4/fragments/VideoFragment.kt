@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.MediaController
+import android.widget.Toast
 import android.widget.VideoView
 import androidx.appcompat.app.ActionBar
 import com.example.labwork4.Data
@@ -56,17 +57,16 @@ class VideoFragment : Fragment() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home){
+    private fun setVideo(){
+        try {
+            videoView.setVideoURI(data.uri)
+            val mediaController = MediaController(context)
+            videoView.setMediaController(mediaController)
+            mediaController.setMediaPlayer(videoView)
+        }
+        catch (e: java.io.FileNotFoundException){
+            Toast.makeText(context, "Something went wrong!", Toast.LENGTH_SHORT).show()
             goToFragment(requireActivity(), MainFragment())
         }
-        return true
-    }
-
-    private fun setVideo(){
-        videoView.setVideoURI(data.uri)
-        val mediaController = MediaController(context)
-        videoView.setMediaController(mediaController)
-        mediaController.setMediaPlayer(videoView)
     }
 }
