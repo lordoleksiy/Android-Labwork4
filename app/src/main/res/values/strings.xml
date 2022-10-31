@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Labwork4</string>
+    <string name="width">match-parent</string>
+    <string name="height">wrap-content</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
