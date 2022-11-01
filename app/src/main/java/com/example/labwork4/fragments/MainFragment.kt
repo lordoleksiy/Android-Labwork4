@@ -1,6 +1,7 @@
 package com.example.labwork4.fragments
 
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,16 +14,27 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.example.labwork4.Data
 import com.example.labwork4.R
-import com.example.labwork4.goToFragment
 
 
 class MainFragment : Fragment() {
     private val data = Data.newInstance()
+    private lateinit var onFragmentChange: OnFragmentChange
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
+    }
+
+    interface OnFragmentChange{
+        fun changeFragment(fragment: Fragment)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentChange) {
+            onFragmentChange = context
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,7 +45,7 @@ class MainFragment : Fragment() {
                 return@registerForActivityResult
             }
             data.uri = it
-            goToFragment(requireActivity(), VideoFragment())
+            onFragmentChange.changeFragment(VideoFragment())
         }
 
         val editText: EditText = view.findViewById(R.id.editText)
@@ -45,14 +57,14 @@ class MainFragment : Fragment() {
 
         view.findViewById<Button>(R.id.exampleVideoButton).setOnClickListener{
             data.uri = Uri.parse("android.resource://" + context?.packageName + "/" + R.raw.testvideo)
-            goToFragment(requireActivity(), VideoFragment())
+            onFragmentChange.changeFragment(VideoFragment())
         }
 
         view.findViewById<Button>(R.id.internetVideoButton).setOnClickListener{
             val link = editText.text.toString()
             if (link.isEmpty()) return@setOnClickListener
             data.uri = Uri.parse(link)
-            goToFragment(requireActivity(), VideoFragment())
+            onFragmentChange.changeFragment(VideoFragment())
         }
     }
 }

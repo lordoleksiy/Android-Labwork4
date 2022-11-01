@@ -7,16 +7,18 @@ import android.view.MenuItem
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.example.labwork4.fragments.MainFragment
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainFragment.OnFragmentChange {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setStatusBarOff()
-        goToFragment(this, MainFragment())
+        setFragment(MainFragment())
     }
 
     override fun onStart() {
@@ -24,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         val data = Data.newInstance()
         data.actionBar = supportActionBar
         if (data.fragment != null)
-            goToFragment(this, data.fragment!!)
+            setFragment(data.fragment!!)
 
     }
 
@@ -43,9 +45,20 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home){
             Log.i("test", "test")
-            goToFragment(this, MainFragment())
+            setFragment(MainFragment())
         }
         return true
+    }
+
+    fun setFragment(fragment: Fragment){
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.placeholder, fragment)
+            .commit()
+    }
+
+    override fun changeFragment(fragment: Fragment) {
+        setFragment(fragment)
     }
 
 }

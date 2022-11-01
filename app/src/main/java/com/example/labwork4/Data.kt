@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.Fragment
 
-class Data (){
+class Data {
     var uri: Uri? = null
     var fragment: Fragment? = null
     var actionBar: ActionBar? = null

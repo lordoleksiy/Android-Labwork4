@@ -20,7 +20,6 @@ import androidx.appcompat.app.ActionBar
 import com.example.labwork4.Data
 import com.example.labwork4.MainActivity
 import com.example.labwork4.R
-import com.example.labwork4.goToFragment
 
 
 class VideoFragment : Fragment() {
@@ -66,7 +65,6 @@ class VideoFragment : Fragment() {
         }
         catch (e: java.io.FileNotFoundException){
             Toast.makeText(context, "Something went wrong!", Toast.LENGTH_SHORT).show()
-            goToFragment(requireActivity(), MainFragment())
         }
     }
 }
