@@ -4,6 +4,7 @@ package com.example.labwork4.fragments
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,6 +48,14 @@ class MainFragment : Fragment() {
             data.uri = it
             onFragmentChange.changeFragment(VideoFragment())
         }
+        val getAudioUri = registerForActivityResult(ActivityResultContracts.GetContent()) {
+            if (it == null){
+                Toast.makeText(context, "No file is chosen!", Toast.LENGTH_SHORT).show()
+                return@registerForActivityResult
+            }
+            data.uri = it
+            onFragmentChange.changeFragment(AudioFragment())
+        }
 
         val editText: EditText = view.findViewById(R.id.editText)
 
@@ -56,8 +65,17 @@ class MainFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.exampleVideoButton).setOnClickListener{
-            data.uri = Uri.parse("android.resource://" + context?.packageName + "/" + R.raw.testvideo)
+            data.uri = Uri.parse("android.resource://${context?.packageName}/${R.raw.testvideo}")
             onFragmentChange.changeFragment(VideoFragment())
+        }
+
+        view.findViewById<Button>(R.id.audioFileButton).setOnClickListener {
+            getAudioUri.launch("audio/mpeg")
+        }
+
+        view.findViewById<Button>(R.id.exampleAudioButton).setOnClickListener {
+            data.uri = Uri.parse("android.resource://${context?.packageName}/${R.raw.testaudio}")
+            onFragmentChange.changeFragment(AudioFragment())
         }
 
         view.findViewById<Button>(R.id.internetVideoButton).setOnClickListener{
@@ -65,6 +83,13 @@ class MainFragment : Fragment() {
             if (link.isEmpty()) return@setOnClickListener
             data.uri = Uri.parse(link)
             onFragmentChange.changeFragment(VideoFragment())
+        }
+
+        view.findViewById<Button>(R.id.internetAudioButton).setOnClickListener {
+            val link = editText.text.toString()
+            if (link.isEmpty()) return@setOnClickListener
+            data.uri = Uri.parse(link)
+            onFragmentChange.changeFragment(AudioFragment())
         }
     }
 }

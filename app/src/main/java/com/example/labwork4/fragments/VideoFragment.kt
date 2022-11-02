@@ -16,9 +16,7 @@ import android.widget.LinearLayout
 import android.widget.MediaController
 import android.widget.Toast
 import android.widget.VideoView
-import androidx.appcompat.app.ActionBar
 import com.example.labwork4.Data
-import com.example.labwork4.MainActivity
 import com.example.labwork4.R
 
 
@@ -66,5 +64,10 @@ class VideoFragment : Fragment() {
         catch (e: java.io.FileNotFoundException){
             Toast.makeText(context, "Something went wrong!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    companion object{
+        @JvmStatic
+        fun newInstance() = VideoFragment()
     }
 }
